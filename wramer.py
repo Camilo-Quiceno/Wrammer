@@ -243,7 +243,6 @@ class Ui_MainWidget(object):
         self.pushButton_apply.clicked.connect(self.pushButton_apply_clicked)
         self.pushButton_cancel.clicked.connect(self.pushButton_cancel_clicked)
 
-
     def comboBox_type_text(self,surgery):
 
         self.comboBox_type.clear()
@@ -377,12 +376,19 @@ class Ui_MainWidget(object):
             final_name = f'{name}_{version}'
 
         if self.radioButton_production_name.isChecked():
-            
-            path = os.getcwd()
-            case_id = path.split('\\')[-1]
+
+        
+
+            case_id = trimatic.get_project_filename()
+            case_id = case_id.split('\\')[-1].split(".")[0]
+
+            if not case_id:
+                case_id = 'XXX_XXX_XXX'
+
+            print(f'EL case id es {case_id}')
 
             unique_id = 'XX'
-            item = 'SD900.XXX'
+            item = 'SD9XX.XXX'
 
             version = int(self.comboBox_rev.currentText().split('V')[-1]) + 1
             name = self.comboBox_type.currentText()
