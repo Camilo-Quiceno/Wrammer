@@ -1,11 +1,9 @@
-
 #Designed by Camilo Quiceno, version 1.0
 #At Materialise Colombia office
 
 #Python
 import os
 import sys
-
 
 #Pyqt
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -160,11 +158,12 @@ class Ui_MainWidget(object):
         self.doubleSpinBox_gap_closing_distance.setObjectName("doubleSpinBox_gap_closing_distance")
         self.doubleSpinBox_smallets_detail = QtWidgets.QDoubleSpinBox(self.tab_wrap)
         self.doubleSpinBox_smallets_detail.setGeometry(QtCore.QRect(170, 100, 51, 22))
-        self.doubleSpinBox_smallets_detail.setDecimals(1)
+        self.doubleSpinBox_smallets_detail.setDecimals(2)
         self.doubleSpinBox_smallets_detail.setObjectName("doubleSpinBox_smallets_detail")
         self.doubleSpinBox_resulting_offset = QtWidgets.QDoubleSpinBox(self.tab_wrap)
         self.doubleSpinBox_resulting_offset.setGeometry(QtCore.QRect(180, 160, 51, 22))
         self.doubleSpinBox_resulting_offset.setDecimals(1)
+        self.doubleSpinBox_resulting_offset.setMinimum(-10)
         self.doubleSpinBox_resulting_offset.setObjectName("doubleSpinBox_resulting_offset")
         self.checkBox_protect_thin_walls = QtWidgets.QCheckBox(self.tab_wrap)
         self.checkBox_protect_thin_walls.setGeometry(QtCore.QRect(190, 130, 21, 21))
@@ -217,7 +216,7 @@ class Ui_MainWidget(object):
         self.comboBox_type_wrap.setItemText(0, _translate("MainWidget", "Wrap"))
         self.comboBox_type_wrap.setItemText(1, _translate("MainWidget", "Planned Models"))
         self.comboBox_type_wrap.setItemText(2, _translate("MainWidget", "PreOp Models"))
-        self.comboBox_type_wrap.setItemText(3, _translate("MainWidget", "Sandwich Button"))
+        self.comboBox_type_wrap.setItemText(3, _translate("MainWidget", "Sandwich Buttom"))
         self.comboBox_type_wrap.setItemText(4, _translate("MainWidget", "Lingual Wall"))
         self.comboBox_type_wrap.setItemText(5, _translate("MainWidget", "Palatal Strap"))
         self.comboBox_type_wrap.setItemText(6, _translate("MainWidget", "Strap Part"))
@@ -237,12 +236,20 @@ class Ui_MainWidget(object):
         self.pushButton_apply.setText(_translate("MainWidget", "Apply"))
         self.pushButton_cancel.setText(_translate("MainWidget", "Cancel"))
 
+        #Namer Connections
         self.radioButton_regular_name.clicked.connect(self.radioButton_regular_name_checked) 
         self.radioButton_production_name.clicked.connect(self.radioButton_production_name_checked)
         self.comboBox_surgery.currentIndexChanged.connect(self.comboBox_surgery_changed)
         self.pushButton_apply.clicked.connect(self.pushButton_apply_clicked)
         self.pushButton_cancel.clicked.connect(self.pushButton_cancel_clicked)
 
+        #Wrapper Connections
+        self.comboBox_type_wrap.currentIndexChanged.connect(self.comboBox_type_wrap_changed)
+
+        self.pushButton_apply_wrapper.clicked.connect(self.pushButton_apply_wrapper_clicked)
+        self.pushButton_cancel_wrapper.clicked.connect(self.pushButton_cancel_clicked)
+
+#Namer Functions
     def comboBox_type_text(self,surgery):
 
         self.comboBox_type.clear()
@@ -377,8 +384,6 @@ class Ui_MainWidget(object):
 
         if self.radioButton_production_name.isChecked():
 
-        
-
             case_id = trimatic.get_project_filename()
             case_id = case_id.split('\\')[-1].split(".")[0]
 
@@ -403,9 +408,94 @@ class Ui_MainWidget(object):
     def pushButton_cancel_clicked(self):
         MainWidget.close()
 
+#Wrapper Function
+    def comboBox_type_wrap_changed(self):
+        if self.comboBox_type_wrap.currentText() == 'Planned Models':
+            self.doubleSpinBox_gap_closing_distance.setValue(2.5)
+            self.doubleSpinBox_smallets_detail.setValue(0.5)
+            self.checkBox_protect_thin_walls.setChecked(False)
+            self.doubleSpinBox_resulting_offset.setValue(0)
+            self.checkBox_reduce.setChecked(True)
+            self.checkBox_preserve_sharp_features.setChecked(True)
+            self.checkBox_preserve_sharp_structures.setChecked(False)
+
+        if self.comboBox_type_wrap.currentText() == 'PreOp Models':
+            self.doubleSpinBox_gap_closing_distance.setValue(3.0)
+            self.doubleSpinBox_smallets_detail.setValue(0.7)
+            self.checkBox_protect_thin_walls.setChecked(False)
+            self.doubleSpinBox_resulting_offset.setValue(0)
+            self.checkBox_reduce.setChecked(True)
+            self.checkBox_preserve_sharp_features.setChecked(False)
+            self.checkBox_preserve_sharp_structures.setChecked(False)
+
+        if self.comboBox_type_wrap.currentText() == 'Sandwich Buttom':
+            self.doubleSpinBox_gap_closing_distance.setValue(1.0)
+            self.doubleSpinBox_smallets_detail.setValue(0.25)
+            self.checkBox_protect_thin_walls.setChecked(False)
+            self.doubleSpinBox_resulting_offset.setValue(0.1)
+            self.checkBox_reduce.setChecked(False)
+            self.checkBox_preserve_sharp_features.setChecked(True)
+            self.checkBox_preserve_sharp_structures.setChecked(True)
+        
+        if self.comboBox_type_wrap.currentText() == 'Lingual Wall':
+            self.doubleSpinBox_gap_closing_distance.setValue(3.0)
+            self.doubleSpinBox_smallets_detail.setValue(0.7)
+            self.checkBox_protect_thin_walls.setChecked(False)
+            self.doubleSpinBox_resulting_offset.setValue(0.3)
+            self.checkBox_reduce.setChecked(True)
+            self.checkBox_preserve_sharp_features.setChecked(False)
+            self.checkBox_preserve_sharp_structures.setChecked(False)
+
+        if self.comboBox_type_wrap.currentText() == 'Palatal Strap':
+            self.doubleSpinBox_gap_closing_distance.setValue(0.0)
+            self.doubleSpinBox_smallets_detail.setValue(0.5)
+            self.checkBox_protect_thin_walls.setChecked(False)
+            self.doubleSpinBox_resulting_offset.setValue(1.5)
+            self.checkBox_reduce.setChecked(True)
+            self.checkBox_preserve_sharp_features.setChecked(False)
+            self.checkBox_preserve_sharp_structures.setChecked(False)    
+
+        if self.comboBox_type_wrap.currentText() == 'Strap Part':
+            self.doubleSpinBox_gap_closing_distance.setValue(0.0)
+            self.doubleSpinBox_smallets_detail.setValue(0.7)
+            self.checkBox_protect_thin_walls.setChecked(False)
+            self.doubleSpinBox_resulting_offset.setValue(3)
+            self.checkBox_reduce.setChecked(True)
+            self.checkBox_preserve_sharp_features.setChecked(False)
+            self.checkBox_preserve_sharp_structures.setChecked(False)
+
+        if self.comboBox_type_wrap.currentText() == 'Large Color File':
+            self.doubleSpinBox_gap_closing_distance.setValue(0.0)
+            self.doubleSpinBox_smallets_detail.setValue(0.7)
+            self.checkBox_protect_thin_walls.setChecked(False)
+            self.doubleSpinBox_resulting_offset.setValue(-0.4)
+            self.checkBox_reduce.setChecked(True)
+            self.checkBox_preserve_sharp_features.setChecked(True)
+            self.checkBox_preserve_sharp_structures.setChecked(False)
+
+    def pushButton_apply_wrapper_clicked(self):
+
+        gap_closing = self.doubleSpinBox_gap_closing_distance.value()
+        smallest_detail = self.doubleSpinBox_smallets_detail.value()
+        protect_thin_walls = self.checkBox_protect_thin_walls.isChecked()
+        resulting_offset = self.doubleSpinBox_resulting_offset.value()
+        reduce_param = self.checkBox_reduce.isChecked()
+        preserve_sharp_features = self.checkBox_preserve_sharp_features.isChecked()
+        preserve_surface_structure = self.checkBox_preserve_sharp_structures.isChecked()
+
+        trimatic.wrap(entities=old_object, gap_closing_distance=gap_closing, smallest_detail=smallest_detail, protect_thin_walls=protect_thin_walls, resulting_offset=resulting_offset, reduce=reduce_param, preserve_sharp_features=preserve_sharp_features, preserve_surface_structure=preserve_surface_structure)
+
+        if self.comboBox_type_wrap.currentText() != 'Wrap'
+            print(f'Object wrapped as {self.comboBox_type_wrap.currentText()} parameters')
+
+        else:
+            print(f'Object wrapped as custom parameters')
+
+        MainWidget.close()
+
 if __name__ == "__main__":
 
-    selection = trimatic.message_box(message="Please select the part to rename" , title= "Name Changer",with_cancel=False)
+    selection = trimatic.message_box(message="Please select the workpart" , title= "Name Changer",with_cancel=False)
 
     try:
         old_object = trimatic.get_selection()
