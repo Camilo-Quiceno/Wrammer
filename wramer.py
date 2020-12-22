@@ -384,26 +384,28 @@ class Ui_MainWidget(object):
 
             name = self.comboBox_type.currentText()
             version = self.comboBox_rev.currentText()
-            final_name = f'{name}_{version}'
+            uid = self.textEdit_UID.toPlainText()
+            final_name = f'{name}_{uid}_{version}'
 
         if self.radioButton_production_name.isChecked():
 
             case_id = trimatic.get_project_filename()
             case_id = case_id.split('\\')[-1].split(".")[0]
 
+            uid = self.textEdit_UID.toPlainText()
+
             if not case_id:
                 case_id = 'XXX_XXX_XXX'
 
             print(f'EL case id es {case_id}')
 
-            unique_id = 'XX'
-            item = 'SD9XX.XXX'
+            item = 'SD900.XXX'
 
             version = int(self.comboBox_rev.currentText().split('V')[-1]) + 1
             name = self.comboBox_type.currentText()
             build = 'build'
 
-            final_name = f'{case_id}_{unique_id}_{item}_V0{version}_{name}_{build}'
+            final_name = f'{case_id}_{uid}_{item}_V0{version}_{name}_{build}'
         
         new_object = trimatic.duplicate(old_object)
         new_object.name = final_name
