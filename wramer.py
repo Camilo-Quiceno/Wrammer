@@ -94,6 +94,9 @@ class Ui_MainWidget(object):
         font.setPointSize(14)
         self.pushButton_cancel.setFont(font)
         self.pushButton_cancel.setObjectName("pushButton_cancel")
+        self.textEdit_UID = QtWidgets.QTextEdit(self.tab_namer)
+        self.textEdit_UID.setGeometry(QtCore.QRect(290, 110, 51, 31))
+        self.textEdit_UID.setObjectName("textEdit_UID")
         MainWidget.addTab(self.tab_namer, "")
         self.tab_wrap = QtWidgets.QWidget()
         self.tab_wrap.setObjectName("tab_wrap")
@@ -210,6 +213,7 @@ class Ui_MainWidget(object):
 
         self.pushButton_apply.setText(_translate("MainWidget", "Apply"))
         self.pushButton_cancel.setText(_translate("MainWidget", "Cancel"))
+        self.textEdit_UID.setPlaceholderText(_translate("MainWidget", "UID"))
         MainWidget.setTabText(MainWidget.indexOf(self.tab_namer), _translate("MainWidget", "Namer"))
 
         #Tab_wrap
@@ -485,7 +489,7 @@ class Ui_MainWidget(object):
 
         trimatic.wrap(entities=old_object, gap_closing_distance=gap_closing, smallest_detail=smallest_detail, protect_thin_walls=protect_thin_walls, resulting_offset=resulting_offset, reduce=reduce_param, preserve_sharp_features=preserve_sharp_features, preserve_surface_structure=preserve_surface_structure)
 
-        if self.comboBox_type_wrap.currentText() != 'Wrap'
+        if self.comboBox_type_wrap.currentText() != 'Wrap':
             print(f'Object wrapped as {self.comboBox_type_wrap.currentText()} parameters')
 
         else:
